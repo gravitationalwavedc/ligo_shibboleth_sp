@@ -3,11 +3,11 @@ version: '3'
 services:
   static:
     build:
-      dockerfile: ./Dockerfile
+      dockerfile: ./docker/ligo_auth.Dockerfile
       context: .
-    image: ligo_sso:dev
-    container_name: ligo_sso
+    image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:dev
+    container_name: ligo_auth
     ports:
       - "80:80"
-#    volumes:
-#      - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+    volumes:
+      - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
