@@ -30,5 +30,10 @@ COPY certs/attribute-map-ligo.xml /etc/shibboleth/attribute-map.xml
 # Copy in the apache configuration 
 COPY conf/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
+# Workaround
+COPY certs/mysitename.crt /etc/ssl/crt/mysitename.crt
+COPY certs/mysitename.key /etc/ssl/crt/mysitename.key
+RUN a2enmod ssl
+
 EXPOSE 80
 CMD service shibd restart && apachectl -D FOREGROUND
