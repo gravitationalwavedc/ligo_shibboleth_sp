@@ -1,0 +1,44 @@
+---
+# 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ligo-auth
+  namespace: bilby
+  labels:
+    app: gwcloud
+    role: web
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gwcloud
+        role: web
+    spec:
+      containers:
+      - name: ligo-auth
+        image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:dev
+        ports:
+        - name: apache
+          containerPort: 80
+        resources: {}
+        tty: true
+      imagePullSecrets:
+      - name: nexus.gw-cloud.org
+---
+# mysql service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ligo-auth
+  namespace: bilby
+spec:
+  ports:
+  - name: apache
+    port: 80
+    targetPort: 80
+  selector:
+    app: gwcloud
+    role: web
+...
