@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  static:
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    image: ligo_sso:dev
+    container_name: ligo_sso
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
