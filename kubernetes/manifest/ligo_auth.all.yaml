@@ -6,39 +6,54 @@ metadata:
   name: ligo-auth
   namespace: bilby
   labels:
-    app: gwcloud
-    role: web
+    name: ligo-auth
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: gwcloud
-        role: web
+        name: ligo-auth
     spec:
       containers:
       - name: ligo-auth
-        image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:dev
+        image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:0.1
         ports:
-        - name: apache
+        - name: http
           containerPort: 80
+        - name: https
+          containerPort: 443
         resources: {}
         tty: true
       imagePullSecrets:
       - name: nexus.gw-cloud.org
+    nodeSelector:
+      kubernetes.io/hostname: deployment-3
 ---
-# mysql service
+# NodePort service
 apiVersion: v1
 kind: Service
 metadata:
+  labels:
+    name: ligo-auth
   name: ligo-auth
   namespace: bilby
 spec:
+  externalTrafficPolicy: Cluster
   ports:
-  - name: apache
+  - name: port-1
+    nodePort: 31602
     port: 80
+    protocol: TCP
     targetPort: 80
+  - name: port-2
+    nodePort: 30201
+    port: 443
+    protocol: TCP
+    targetPort: 443
   selector:
-    app: gwcloud
-    role: web
+    name: ligo-auth
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
 ...

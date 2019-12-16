@@ -5,7 +5,7 @@ services:
     build:
       dockerfile: ./docker/ligo_auth.Dockerfile
       context: .
-    image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:dev
+    image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:0.1
     container_name: ligo_auth
     ports:
       - "80:80" # Apache conf
