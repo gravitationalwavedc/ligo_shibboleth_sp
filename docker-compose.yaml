@@ -3,6 +3,16 @@ version: '3'
 services:
   static:
     build:
+<<<<<<< HEAD
+      dockerfile: ./Dockerfile
+      context: .
+    image: ligo_sso:dev
+    container_name: ligo_sso
+    ports:
+      - "80:80"
+    volumes:
+      - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+=======
       dockerfile: ./docker/ligo_auth.Dockerfile
       context: .
     image: nexus.gw-cloud.org/gwcloud-dev/ligo_auth:0.1
@@ -12,3 +22,4 @@ services:
       - "443:443" # Django APP
     volumes:
       - ./conf/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+>>>>>>> 6698a19e3f1a8995bdbb358e35349169abbda452

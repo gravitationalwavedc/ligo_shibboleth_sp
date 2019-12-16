@@ -8,6 +8,12 @@ RUN apt-get -y install shibboleth-sp2-common shibboleth-sp2-utils libapache2-mod
 RUN a2enmod shib
 RUN a2enmod wsgi
 
+<<<<<<< HEAD
+# Copy apache config
+COPY conf/000-default.conf /etc/apache2/sites-enabled/000-default.conf
+
+=======
+>>>>>>> 6698a19e3f1a8995bdbb358e35349169abbda452
 # Copy django source
 COPY src /src
 
@@ -27,6 +33,14 @@ COPY certs/login.ligo.org.cert.LIOGOCA.pem.txt /etc/shibboleth/login.ligo.org.ce
 COPY certs/shibboleth2-version3.xml /etc/shibboleth/shibboleth2.xml 
 COPY certs/attribute-map-ligo.xml /etc/shibboleth/attribute-map.xml
 
+<<<<<<< HEAD
+RUN mkdir -p /var/run/apache2
+RUN chown www-data:www-data /var/run/apache2
+
+#RUN chown www-data:www-data -R /src
+#RUN chmod 777 -R /src
+#RUN chmod 777 -R /tmp
+=======
 # Copy in the apache configuration 
 COPY conf/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
@@ -34,6 +48,7 @@ COPY conf/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY certs/mysitename.crt /etc/ssl/crt/mysitename.crt
 COPY certs/mysitename.key /etc/ssl/crt/mysitename.key
 RUN a2enmod ssl
+>>>>>>> 6698a19e3f1a8995bdbb358e35349169abbda452
 
 EXPOSE 80
 CMD service shibd restart && apachectl -D FOREGROUND
