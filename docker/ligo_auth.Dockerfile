@@ -31,8 +31,18 @@ COPY certs/attribute-map-ligo.xml /etc/shibboleth/attribute-map.xml
 COPY conf/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Workaround
-COPY certs/mysitename.crt /etc/ssl/crt/mysitename.crt
-COPY certs/mysitename.key /etc/ssl/crt/mysitename.key
+# COPY certs/mysitename.crt /etc/ssl/crt/mysitename.crt
+# COPY certs/mysitename.key /etc/ssl/crt/mysitename.key
+RUN apt-get update && \
+    apt-get install -y openssl && \
+    mkdir -p /etc/ssl/crt/ && \
+    openssl genrsa -passout pass:x -out server.pass.key && \
+    openssl rsa -passin pass:x -in server.pass.key -out /etc/ssl/crt/mysitename.key && \
+    rm server.pass.key && \
+    openssl req -new -key /etc/ssl/crt/mysitename.key -out server.csr \
+        -subj "/C=AU/ST=Victoria/L=Swinburne/O=OrgName/OU=IT Department/CN=gw-cloud.org" && \
+    openssl x509 -req -days 365 -in server.csr -signkey /etc/ssl/crt/mysitename.key -out /etc/ssl/crt/mysitename.crt
+    
 RUN a2enmod ssl
 
 EXPOSE 80
